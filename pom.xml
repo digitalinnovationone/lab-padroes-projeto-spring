@@ -13,7 +13,7 @@
 	<artifactId>lab-padroes-projeto-spring</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>lab-padroes-projeto-spring</name>
-	<description>Exemplos de Padrões de Projeto com Spring</description>
+	<description>Exemplos de Padrões de Projeto em Spring</description>
 	
 	<properties>
 		<java.version>11</java.version>
