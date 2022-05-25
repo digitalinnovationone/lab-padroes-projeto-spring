@@ -38,10 +38,11 @@
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
 		<!-- OpenAPI/Swagger (adicionado manualmente) -->
+		<!-- Alteração na versão utilizada do openapi -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>${openapi.version}</version>
+			<version>1.6.8</version>
 		</dependency>
 
 		<!-- H2 Database (adicionado via Spring Initializr) -->
