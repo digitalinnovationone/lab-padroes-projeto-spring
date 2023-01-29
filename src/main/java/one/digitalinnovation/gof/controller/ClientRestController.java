@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import one.digitalinnovation.gof.model.Cliente;
-import one.digitalinnovation.gof.service.ClienteService;
+import one.digitalinnovation.gof.model.Client;
+import one.digitalinnovation.gof.service.ClientService;
 
 /**
  * Esse {@link RestController} representa nossa <b>Facade</b>, pois abstrai toda
@@ -20,39 +20,40 @@ import one.digitalinnovation.gof.service.ClienteService;
  * interface simples e coesa (API REST).
  * 
  * @author falvojr
+ * @author edielson-assis
  */
 @RestController
-@RequestMapping("clientes")
-public class ClienteRestController {
+@RequestMapping(value = "clients")
+public class ClientRestController {
 
 	@Autowired
-	private ClienteService clienteService;
+	private ClientService clientService;
 
 	@GetMapping
-	public ResponseEntity<Iterable<Cliente>> buscarTodos() {
-		return ResponseEntity.ok(clienteService.buscarTodos());
+	public ResponseEntity<Iterable<Client>> findAll() {
+		return ResponseEntity.ok(clientService.findAll());
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Cliente> buscarPorId(@PathVariable Long id) {
-		return ResponseEntity.ok(clienteService.buscarPorId(id));
+	public ResponseEntity<Client> findById(@PathVariable Long id) {
+		return ResponseEntity.ok(clientService.findById(id));
 	}
 
 	@PostMapping
-	public ResponseEntity<Cliente> inserir(@RequestBody Cliente cliente) {
-		clienteService.inserir(cliente);
-		return ResponseEntity.ok(cliente);
+	public ResponseEntity<Client> insert(@RequestBody Client client) {
+		clientService.insert(client);
+		return ResponseEntity.ok(client);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Cliente> atualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
-		clienteService.atualizar(id, cliente);
-		return ResponseEntity.ok(cliente);
+	public ResponseEntity<Client> update(@PathVariable Long id, @RequestBody Client client) {
+		clientService.update(id, client);
+		return ResponseEntity.ok(client);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deletar(@PathVariable Long id) {
-		clienteService.deletar(id);
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		clientService.delete(id);
 		return ResponseEntity.ok().build();
 	}
 }

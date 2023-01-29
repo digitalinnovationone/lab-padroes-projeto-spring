@@ -11,8 +11,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * - Spring Web
  * - H2 Database
  * - OpenFeign
+ * - Lombok
  * 
  * @author falvojr
+ * @author edielson-assis
  */
 @EnableFeignClients
 @SpringBootApplication
