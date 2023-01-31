@@ -12,7 +12,7 @@ Repositório com as implementações dos padrões de projeto explorados no Lab "
 
 # Passo a passo
 
-Após fazer o clone da aplicação, basta executa-la em uma IDE e digitar no navegodor: 127.0.0.1:8080/swagger-ui/index.html ou clicar aqui 👉🏽 [Swagger](127.0.0.1:8080/swagger-ui/index.html) e então, realizar a consulta fazendo um post passando o cep e depois um get para consultar.
+Após fazer o clone da aplicação, basta executa-la em uma IDE e digitar no navegodor: 127.0.0.1:8080/swagger-ui/index.html ou clicar aqui 👉🏽 [Swagger](http://127.0.0.1:8080/swagger-ui/index.html) e então, realizar a consulta fazendo um post passando o cep e depois um get para consultar.
 
 # Autor
 
