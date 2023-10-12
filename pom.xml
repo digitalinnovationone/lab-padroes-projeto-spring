@@ -18,7 +18,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<openapi.version>1.5.10</openapi.version>
-		<spring-cloud.version>2020.0.3</spring-cloud.version>
+		<spring-cloud.version>2021.0.8</spring-cloud.version>
 	</properties>
 	
 	<dependencies>
