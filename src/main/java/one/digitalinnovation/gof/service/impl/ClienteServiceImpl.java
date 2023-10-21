@@ -17,7 +17,6 @@ import one.digitalinnovation.gof.service.ViaCepService;
  * injetada pelo Spring (via {@link Autowired}). Com isso, como essa classe é um
  * {@link Service}, ela será tratada como um <b>Singleton</b>.
  * 
- * @author falvojr
  */
 @Service
 public class ClienteServiceImpl implements ClienteService {

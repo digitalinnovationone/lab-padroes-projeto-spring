@@ -7,7 +7,6 @@ import one.digitalinnovation.gof.model.Cliente;
  * isso, se necessário, podemos ter multiplas implementações dessa mesma
  * interface.
  * 
- * @author falvojr
  */
 public interface ClienteService {
 

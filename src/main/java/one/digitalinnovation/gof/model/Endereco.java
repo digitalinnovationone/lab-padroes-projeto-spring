@@ -10,7 +10,6 @@ import javax.persistence.Id;
  * @see <a href="https://www.jsonschema2pojo.org">jsonschema2pojo.org</a>
  * @see <a href="https://viacep.com.br">ViaCEP</a>
  * 
- * @author falvojr
  */
 @Entity
 public class Endereco {
