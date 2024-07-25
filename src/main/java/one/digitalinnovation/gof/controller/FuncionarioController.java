@@ -1,5 +1,6 @@
 package one.digitalinnovation.gof.controller;
 
+import one.digitalinnovation.gof.model.Funcionario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import one.digitalinnovation.gof.model.Cliente;
-import one.digitalinnovation.gof.service.ClienteService;
+import one.digitalinnovation.gof.service.FuncionarioService;
 
 /**
  * Esse {@link RestController} representa nossa <b>Facade</b>, pois abstrai toda
@@ -22,37 +22,41 @@ import one.digitalinnovation.gof.service.ClienteService;
  * @author falvojr
  */
 @RestController
-@RequestMapping("clientes")
-public class ClienteRestController {
+@RequestMapping("funcionarios")
+public class FuncionarioController {
 
 	@Autowired
-	private ClienteService clienteService;
+	private FuncionarioService funcionarioService;
 
 	@GetMapping
-	public ResponseEntity<Iterable<Cliente>> buscarTodos() {
-		return ResponseEntity.ok(clienteService.buscarTodos());
+	public ResponseEntity<Iterable<Funcionario>> buscarTodos() {
+		return ResponseEntity.ok(funcionarioService.buscarTodos());
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Cliente> buscarPorId(@PathVariable Long id) {
-		return ResponseEntity.ok(clienteService.buscarPorId(id));
+	public ResponseEntity<Funcionario> buscarPorId(@PathVariable Long id) {
+		return ResponseEntity.ok(funcionarioService.buscarPorId(id));
+	}
+	@GetMapping("/{cpf}")
+	public ResponseEntity<Funcionario> buscarPorId(@PathVariable String cpf) {
+		return ResponseEntity.ok(funcionarioService.buscaPorCpf(cpf));
 	}
 
-	@PostMapping
-	public ResponseEntity<Cliente> inserir(@RequestBody Cliente cliente) {
-		clienteService.inserir(cliente);
-		return ResponseEntity.ok(cliente);
+	@PostMapping("/criar")
+	public ResponseEntity<Funcionario> inserir(@RequestBody Funcionario funcionario) {
+		funcionarioService.inserir(funcionario);
+		return ResponseEntity.ok(funcionario);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Cliente> atualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
-		clienteService.atualizar(id, cliente);
-		return ResponseEntity.ok(cliente);
+	public ResponseEntity<Funcionario> atualizar(@PathVariable Long id, @RequestBody Funcionario funcionario) {
+		funcionarioService.atualizar(id, funcionario);
+		return ResponseEntity.ok(funcionario);
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletar(@PathVariable Long id) {
-		clienteService.deletar(id);
+		funcionarioService.deletar(id);
 		return ResponseEntity.ok().build();
 	}
 }
