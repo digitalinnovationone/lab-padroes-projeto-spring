@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import one.digitalinnovation.gof.model.Endereco;
 
+import java.util.List;
+
 /**
  * Client HTTP, criado via <b>OpenFeign</b>, para o consumo da API do
  * <b>ViaCEP</b>.
@@ -20,4 +22,9 @@ public interface ViaCepService {
 
 	@GetMapping("/{cep}/json/")
 	Endereco consultarCep(@PathVariable("cep") String cep);
+
+
+	@GetMapping("/faixa/{cepInicial}/{cepFinal}/json/")
+	List<Endereco> consultarFaixaDeCeps(@PathVariable("cepInicial") String cepInicial, @PathVariable("cepFinal") String cepFinal);
+
 }

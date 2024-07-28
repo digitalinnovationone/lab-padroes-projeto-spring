@@ -1,5 +1,6 @@
 package one.digitalinnovation.gof.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,25 @@ public class ClienteServiceImpl implements ClienteService {
 		cliente.setEndereco(endereco);
 		// Inserir Cliente, vinculando o Endereco (novo ou existente).
 		clienteRepository.save(cliente);
+	}
+
+	public List<Cliente> buscarPorNome(String nome) {
+		// Buscar Clientes por nome.
+		return clienteRepository.findByNome(nome);
+	}
+
+
+	public List<Endereco> buscarEnderecosPorFaixaDeCep(String cepInicial, String cepFinal) {
+		return viaCepService.consultarFaixaDeCeps(cepInicial, cepFinal);
+	}
+
+	public void inserirClientesPorFaixaDeCep(String cepInicial, String cepFinal) {
+		List<Endereco> enderecos = viaCepService.consultarFaixaDeCeps(cepInicial, cepFinal);
+		for (Endereco endereco : enderecos) {
+			Cliente cliente = new Cliente();
+			cliente.setEndereco(endereco);
+			clienteRepository.save(cliente);
+		}
 	}
 
 }
