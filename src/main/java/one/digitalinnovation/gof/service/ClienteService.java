@@ -15,6 +15,10 @@ public interface ClienteService {
 
 	Cliente buscarPorId(Long id);
 
+	Iterable<Cliente> buscarPorNome(String nome);
+
+	Iterable<Cliente> buscarPorCep(String cep);
+
 	void inserir(Cliente cliente);
 
 	void atualizar(Long id, Cliente cliente);
