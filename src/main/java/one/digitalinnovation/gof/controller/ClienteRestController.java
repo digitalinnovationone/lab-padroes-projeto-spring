@@ -2,17 +2,13 @@ package one.digitalinnovation.gof.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import one.digitalinnovation.gof.model.Cliente;
 import one.digitalinnovation.gof.service.ClienteService;
+
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Esse {@link RestController} representa nossa <b>Facade</b>, pois abstrai toda
@@ -49,7 +45,15 @@ public class ClienteRestController {
 		clienteService.atualizar(id, cliente);
 		return ResponseEntity.ok(cliente);
 	}
-
+	@PatchMapping("/{id}")
+	public ResponseEntity<Cliente> atualizarCampo(@PathVariable Long id, @RequestBody Cliente cliente){
+		Cliente clienteDb = clienteService.buscarPorId(id);
+		if(clienteDb != null){
+			clienteService.atualizarCampo(id,cliente);
+			return ResponseEntity.ok(cliente);
+		}
+		return ResponseEntity.notFound().build();
+	}
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletar(@PathVariable Long id) {
 		clienteService.deletar(id);
