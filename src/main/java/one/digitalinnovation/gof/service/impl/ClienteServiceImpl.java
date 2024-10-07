@@ -1,5 +1,6 @@
 package one.digitalinnovation.gof.service.impl;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,17 @@ public class ClienteServiceImpl implements ClienteService {
 		}
 	}
 
+	@Override
+	public void atualizarCampo(Long id, Cliente cliente){
+		Optional<Cliente> clienteBd = clienteRepository.findById(id);
+		if(clienteBd.isPresent()){
+			Cliente clienteAtulizar = clienteBd.get();
+			if(cliente.getNome() != null){
+				clienteAtulizar.setNome(cliente.getNome());
+			}
+			salvarClienteComCep(clienteAtulizar);
+		}
+	}
 	@Override
 	public void deletar(Long id) {
 		// Deletar Cliente por ID.
