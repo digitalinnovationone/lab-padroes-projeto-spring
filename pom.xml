@@ -7,44 +7,44 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.5.4</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<relativePath />
 	</parent>
 	<groupId>digitalinnovation.one</groupId>
 	<artifactId>lab-padroes-projeto-spring</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>lab-padroes-projeto-spring</name>
 	<description>Exemplos de Padrões de Projeto em Spring</description>
 	
 	<properties>
 		<java.version>11</java.version>
-		<openapi.version>1.5.10</openapi.version>
-		<spring-cloud.version>2020.0.3</spring-cloud.version>
+		<openapi.version>1.5.09</openapi.version>
+		<spring-cloud.version>2021.0.8</spring-cloud.version>
 	</properties>
 	
 	<dependencies>
-		<!-- Spring Data JPA (adicionado via Spring Initializr) -->
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<!-- Spring Web (adicionado via Spring Initializr) -->
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<!-- OpenFeign (adicionado via Spring Initializr) -->
+		
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
-		<!-- OpenAPI/Swagger (adicionado manualmente) -->
+		
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>${openapi.version}</version>
 		</dependency>
 
-		<!-- H2 Database (adicionado via Spring Initializr) -->
+		
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
