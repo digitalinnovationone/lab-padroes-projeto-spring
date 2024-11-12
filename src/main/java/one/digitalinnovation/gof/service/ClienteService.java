@@ -1,6 +1,8 @@
 package one.digitalinnovation.gof.service;
 
 import one.digitalinnovation.gof.model.Cliente;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
 
 /**
  * Interface que define o padrão <b>Strategy</b> no domínio de cliente. Com
@@ -11,7 +13,7 @@ import one.digitalinnovation.gof.model.Cliente;
  */
 public interface ClienteService {
 
-	Iterable<Cliente> buscarTodos();
+	Iterable<Cliente> buscarTodos(PageRequest pageRequest);
 
 	Cliente buscarPorId(Long id);
 

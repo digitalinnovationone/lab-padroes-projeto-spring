@@ -3,6 +3,7 @@ package one.digitalinnovation.gof.service.impl;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import one.digitalinnovation.gof.model.Cliente;
@@ -34,7 +35,7 @@ public class ClienteServiceImpl implements ClienteService {
 	// Facade: Abstrair integrações com subsistemas, provendo uma interface simples.
 
 	@Override
-	public Iterable<Cliente> buscarTodos() {
+	public Iterable<Cliente> buscarTodos(PageRequest pageRequest) {
 		// Buscar todos os Clientes.
 		return clienteRepository.findAll();
 	}
