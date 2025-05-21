@@ -35,13 +35,13 @@ public class ClienteRestController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Cliente> buscarPorId(@PathVariable Long id) {
-		return ResponseEntity.ok(clienteService.buscarPorId(id));
-	}
+		Cliente cliente = clienteService.buscarPorId(id);
+				return ResponseEntity.ok(cliente);}
 
 	@PostMapping
 	public ResponseEntity<Cliente> inserir(@RequestBody Cliente cliente) {
 		clienteService.inserir(cliente);
-		return ResponseEntity.ok(cliente);
+				return ResponseEntity.ok(cliente);
 	}
 
 	@PutMapping("/{id}")
@@ -49,7 +49,11 @@ public class ClienteRestController {
 		clienteService.atualizar(id, cliente);
 		return ResponseEntity.ok(cliente);
 	}
-
+	@GetMapping("/nome/{nome}")
+	public ResponseEntity<Cliente> buscarPorNome(@PathVariable String nome) {
+		Cliente cliente = clienteService.buscarPorNome(nome);
+		return ResponseEntity.ok(cliente);
+	}
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletar(@PathVariable Long id) {
 		clienteService.deletar(id);
