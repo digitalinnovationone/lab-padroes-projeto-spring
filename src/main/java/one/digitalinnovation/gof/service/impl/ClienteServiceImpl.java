@@ -59,7 +59,11 @@ public class ClienteServiceImpl implements ClienteService {
 			salvarClienteComCep(cliente);
 		}
 	}
-
+	@Override
+	public Cliente buscarPorNome(String nome) {
+		Optional<Cliente> cliente = clienteRepository.findByNome(nome);
+		return cliente.orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+	}
 	@Override
 	public void deletar(Long id) {
 		// Deletar Cliente por ID.
