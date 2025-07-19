@@ -19,6 +19,7 @@
 		<java.version>11</java.version>
 		<openapi.version>1.5.10</openapi.version>
 		<spring-cloud.version>2020.0.3</spring-cloud.version>
+        <lombok.version>1.18.20</lombok.version>
 	</properties>
 	
 	<dependencies>
@@ -43,6 +44,12 @@
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>${openapi.version}</version>
 		</dependency>
+        <!-- Lombok (adicionado manualmente) -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
 
 		<!-- H2 Database (adicionado via Spring Initializr) -->
 		<dependency>
