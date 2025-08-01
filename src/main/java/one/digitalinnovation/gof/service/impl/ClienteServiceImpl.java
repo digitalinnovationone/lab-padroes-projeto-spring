@@ -10,7 +10,7 @@ import one.digitalinnovation.gof.model.ClienteRepository;
 import one.digitalinnovation.gof.model.Endereco;
 import one.digitalinnovation.gof.model.EnderecoRepository;
 import one.digitalinnovation.gof.service.ClienteService;
-import one.digitalinnovation.gof.service.ViaCepService;
+import one.digitalinnovation.gof.client.ViaCepService;
 
 /**
  * Implementação da <b>Strategy</b> {@link ClienteService}, a qual pode ser
