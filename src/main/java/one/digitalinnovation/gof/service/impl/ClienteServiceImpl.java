@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import one.digitalinnovation.gof.exception.ClienteNotFoundException;
 import one.digitalinnovation.gof.model.Cliente;
 import one.digitalinnovation.gof.model.ClienteRepository;
 import one.digitalinnovation.gof.model.Endereco;
@@ -42,8 +43,8 @@ public class ClienteServiceImpl implements ClienteService {
 	@Override
 	public Cliente buscarPorId(Long id) {
 		// Buscar Cliente por ID.
-		Optional<Cliente> cliente = clienteRepository.findById(id);
-		return cliente.get();
+		return clienteRepository.findById(id)
+            .orElseThrow(() -> new ClienteNotFoundException(id));
 	}
 
 	@Override
