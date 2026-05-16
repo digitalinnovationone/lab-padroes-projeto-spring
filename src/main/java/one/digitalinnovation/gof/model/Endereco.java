@@ -23,9 +23,9 @@ public class Endereco {
 	private String localidade;
 	private String uf;
 	private String ibge;
-	private String gia;
+	private String gia;// GIA (Guia de Informação e Apuração do ICMS) / Código do Município para a SEFAZ
 	private String ddd;
-	private String siafi;
+	private String siafi;// SIAFI (Sistema Integrado de Administração Financeira)
 
 	public String getCep() {
 		return cep;
