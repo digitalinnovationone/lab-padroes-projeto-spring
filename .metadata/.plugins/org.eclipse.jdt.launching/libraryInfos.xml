@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<libraryInfos>
+    <libraryInfo home="C:\Users\Alex Magna\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.10.v20260205-0638" version="21.0.10">
+        <bootpath>
+            <entry path="null"/>
+        </bootpath>
+        <extensionDirs>
+            <entry path="null"/>
+        </extensionDirs>
+        <endorsedDirs>
+            <entry path="null"/>
+        </endorsedDirs>
+    </libraryInfo>
+    <libraryInfo home="C:\Users\Alex Magna\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.10.v20260205-0638\jre" version="21.0.10"/>
+    <libraryInfo home="C:\Program Files\Java\jre1.8.0_431" version="1.8.0_431">
+        <bootpath>
+            <entry path="C:\Program Files\Java\jre1.8.0_431\lib\resources.jar"/>
+            <entry path="C:\Program Files\Java\jre1.8.0_431\lib\rt.jar"/>
+            <entry path="C:\Program Files\Java\jre1.8.0_431\lib\jsse.jar"/>
+            <entry path="C:\Program Files\Java\jre1.8.0_431\lib\jce.jar"/>
+            <entry path="C:\Program Files\Java\jre1.8.0_431\lib\charsets.jar"/>
+            <entry path="C:\Program Files\Java\jre1.8.0_431\lib\jfr.jar"/>
+            <entry path="C:\Program Files\Java\jre1.8.0_431\classes"/>
+        </bootpath>
+        <extensionDirs>
+            <entry path="C:\Program Files\Java\jre1.8.0_431\lib\ext"/>
+            <entry path="C:\WINDOWS\Sun\Java\lib\ext"/>
+        </extensionDirs>
+        <endorsedDirs>
+            <entry path="C:\Program Files\Java\jre1.8.0_431\lib\endorsed"/>
+        </endorsedDirs>
+    </libraryInfo>
+</libraryInfos>
