@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/voxai
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update

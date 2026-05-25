@@ -1,0 +1,7 @@
+# POST /notification
+
+{
+  "type": "EMAIL",
+  "recipient": "yas@email.com",
+  "message": "Deploy realizado com sucesso"
+}
