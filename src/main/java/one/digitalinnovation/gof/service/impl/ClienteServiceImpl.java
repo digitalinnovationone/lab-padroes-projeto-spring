@@ -1,83 +1,89 @@
 package one.digitalinnovation.gof.service.impl;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import one.digitalinnovation.gof.event.ClienteCadastradoEvent;
+import one.digitalinnovation.gof.exception.RecursoNaoEncontradoException;
 import one.digitalinnovation.gof.model.Cliente;
 import one.digitalinnovation.gof.model.ClienteRepository;
 import one.digitalinnovation.gof.model.Endereco;
 import one.digitalinnovation.gof.model.EnderecoRepository;
 import one.digitalinnovation.gof.service.ClienteService;
 import one.digitalinnovation.gof.service.ViaCepService;
+import one.digitalinnovation.gof.validation.CadeiaValidacaoCliente;
 
 /**
- * Implementação da <b>Strategy</b> {@link ClienteService}, a qual pode ser
- * injetada pelo Spring (via {@link Autowired}). Com isso, como essa classe é um
- * {@link Service}, ela será tratada como um <b>Singleton</b>.
- * 
- * @author falvojr
+ * Implementação da <b>Strategy</b> {@link ClienteService}. Como é um
+ * {@link Service} do Spring, atua como <b>Singleton</b> e como <b>Facade</b> das
+ * integrações (H2 e ViaCEP). Aplica a <b>Chain of Responsibility</b> de
+ * validação antes de persistir e publica um evento (<b>Observer</b>) após o
+ * cadastro.
  */
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
-	// Singleton: Injetar os componentes do Spring com @Autowired.
-	@Autowired
-	private ClienteRepository clienteRepository;
-	@Autowired
-	private EnderecoRepository enderecoRepository;
-	@Autowired
-	private ViaCepService viaCepService;
-	
-	// Strategy: Implementar os métodos definidos na interface.
-	// Facade: Abstrair integrações com subsistemas, provendo uma interface simples.
+	private final ClienteRepository clienteRepository;
+	private final EnderecoRepository enderecoRepository;
+	private final ViaCepService viaCepService;
+	private final CadeiaValidacaoCliente cadeiaValidacao;
+	private final ApplicationEventPublisher eventPublisher;
+
+	public ClienteServiceImpl(ClienteRepository clienteRepository, EnderecoRepository enderecoRepository,
+			ViaCepService viaCepService, CadeiaValidacaoCliente cadeiaValidacao,
+			ApplicationEventPublisher eventPublisher) {
+		this.clienteRepository = clienteRepository;
+		this.enderecoRepository = enderecoRepository;
+		this.viaCepService = viaCepService;
+		this.cadeiaValidacao = cadeiaValidacao;
+		this.eventPublisher = eventPublisher;
+	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Iterable<Cliente> buscarTodos() {
-		// Buscar todos os Clientes.
 		return clienteRepository.findAll();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Cliente buscarPorId(Long id) {
-		// Buscar Cliente por ID.
-		Optional<Cliente> cliente = clienteRepository.findById(id);
-		return cliente.get();
+		return clienteRepository.findById(id)
+				.orElseThrow(() -> new RecursoNaoEncontradoException("Cliente não encontrado para o id " + id + "."));
 	}
 
 	@Override
+	@Transactional
 	public void inserir(Cliente cliente) {
+		cadeiaValidacao.validar(cliente);
+		salvarClienteComCep(cliente);
+		eventPublisher.publishEvent(new ClienteCadastradoEvent(this, cliente));
+	}
+
+	@Override
+	@Transactional
+	public void atualizar(Long id, Cliente cliente) {
+		Cliente existente = buscarPorId(id);
+		cadeiaValidacao.validar(cliente);
+		cliente.setId(existente.getId());
 		salvarClienteComCep(cliente);
 	}
 
 	@Override
-	public void atualizar(Long id, Cliente cliente) {
-		// Buscar Cliente por ID, caso exista:
-		Optional<Cliente> clienteBd = clienteRepository.findById(id);
-		if (clienteBd.isPresent()) {
-			salvarClienteComCep(cliente);
-		}
-	}
-
-	@Override
+	@Transactional
 	public void deletar(Long id) {
-		// Deletar Cliente por ID.
+		buscarPorId(id);
 		clienteRepository.deleteById(id);
 	}
 
 	private void salvarClienteComCep(Cliente cliente) {
-		// Verificar se o Endereco do Cliente já existe (pelo CEP).
 		String cep = cliente.getEndereco().getCep();
 		Endereco endereco = enderecoRepository.findById(cep).orElseGet(() -> {
-			// Caso não exista, integrar com o ViaCEP e persistir o retorno.
 			Endereco novoEndereco = viaCepService.consultarCep(cep);
-			enderecoRepository.save(novoEndereco);
-			return novoEndereco;
+			return enderecoRepository.save(novoEndereco);
 		});
 		cliente.setEndereco(endereco);
-		// Inserir Cliente, vinculando o Endereco (novo ou existente).
 		clienteRepository.save(cliente);
 	}
-
 }

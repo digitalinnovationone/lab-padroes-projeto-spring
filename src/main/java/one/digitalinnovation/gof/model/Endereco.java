@@ -27,6 +27,26 @@ public class Endereco {
 	private String ddd;
 	private String siafi;
 
+	public Endereco() {
+	}
+
+	private Endereco(Builder builder) {
+		this.cep = builder.cep;
+		this.logradouro = builder.logradouro;
+		this.complemento = builder.complemento;
+		this.bairro = builder.bairro;
+		this.localidade = builder.localidade;
+		this.uf = builder.uf;
+		this.ibge = builder.ibge;
+		this.gia = builder.gia;
+		this.ddd = builder.ddd;
+		this.siafi = builder.siafi;
+	}
+
+	public static Builder builder() {
+		return new Builder();
+	}
+
 	public String getCep() {
 		return cep;
 	}
@@ -105,6 +125,74 @@ public class Endereco {
 
 	public void setSiafi(String siafi) {
 		this.siafi = siafi;
+	}
+
+	public static class Builder {
+
+		private String cep;
+		private String logradouro;
+		private String complemento;
+		private String bairro;
+		private String localidade;
+		private String uf;
+		private String ibge;
+		private String gia;
+		private String ddd;
+		private String siafi;
+
+		public Builder cep(String cep) {
+			this.cep = cep;
+			return this;
+		}
+
+		public Builder logradouro(String logradouro) {
+			this.logradouro = logradouro;
+			return this;
+		}
+
+		public Builder complemento(String complemento) {
+			this.complemento = complemento;
+			return this;
+		}
+
+		public Builder bairro(String bairro) {
+			this.bairro = bairro;
+			return this;
+		}
+
+		public Builder localidade(String localidade) {
+			this.localidade = localidade;
+			return this;
+		}
+
+		public Builder uf(String uf) {
+			this.uf = uf;
+			return this;
+		}
+
+		public Builder ibge(String ibge) {
+			this.ibge = ibge;
+			return this;
+		}
+
+		public Builder gia(String gia) {
+			this.gia = gia;
+			return this;
+		}
+
+		public Builder ddd(String ddd) {
+			this.ddd = ddd;
+			return this;
+		}
+
+		public Builder siafi(String siafi) {
+			this.siafi = siafi;
+			return this;
+		}
+
+		public Endereco build() {
+			return new Endereco(this);
+		}
 	}
 
 }
