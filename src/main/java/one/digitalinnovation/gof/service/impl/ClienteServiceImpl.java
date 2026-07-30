@@ -2,6 +2,7 @@ package one.digitalinnovation.gof.service.impl;
 
 import java.util.Optional;
 
+import one.digitalinnovation.gof.service.ClienteEventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,14 @@ import one.digitalinnovation.gof.service.ViaCepService;
 public class ClienteServiceImpl implements ClienteService {
 
 	// Singleton: Injetar os componentes do Spring com @Autowired.
-	@Autowired
-	private ClienteRepository clienteRepository;
-	@Autowired
-	private EnderecoRepository enderecoRepository;
-	@Autowired
-	private ViaCepService viaCepService;
+    @Autowired
+    private ClienteRepository clienteRepository;
+    @Autowired
+    private EnderecoRepository enderecoRepository;
+    @Autowired
+    private ViaCepService viaCepService;
+    @Autowired
+    private ClienteEventPublisher clienteEventPublisher;
 	
 	// Strategy: Implementar os métodos definidos na interface.
 	// Facade: Abstrair integrações com subsistemas, provendo uma interface simples.
@@ -49,21 +52,26 @@ public class ClienteServiceImpl implements ClienteService {
 	@Override
 	public void inserir(Cliente cliente) {
 		salvarClienteComCep(cliente);
+        clienteEventPublisher.notificarTodos(cliente, "CRIADO");
 	}
 
 	@Override
 	public void atualizar(Long id, Cliente cliente) {
 		// Buscar Cliente por ID, caso exista:
-		Optional<Cliente> clienteBd = clienteRepository.findById(id);
-		if (clienteBd.isPresent()) {
-			salvarClienteComCep(cliente);
-		}
+        Optional<Cliente> clienteBd = clienteRepository.findById(id);
+        if (clienteBd.isPresent()) {
+            salvarClienteComCep(cliente);
+            clienteEventPublisher.notificarTodos(cliente, "ATUALIZADO");
+        }
 	}
 
 	@Override
 	public void deletar(Long id) {
+
+        Optional<Cliente> clienteBd = clienteRepository.findById(id);
 		// Deletar Cliente por ID.
 		clienteRepository.deleteById(id);
+        clienteBd.ifPresent(cliente -> clienteEventPublisher.notificarTodos(cliente, "REMOVIDO"));
 	}
 
 	private void salvarClienteComCep(Cliente cliente) {
