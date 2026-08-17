@@ -15,7 +15,7 @@ import one.digitalinnovation.gof.model.Endereco;
  * 
  * @author falvojr
  */
-@FeignClient(name = "viacep", url = "https://viacep.com.br/ws")
+@FeignClient(name = "viacep", url = "${viacep.url}")
 public interface ViaCepService {
 
 	@GetMapping("/{cep}/json/")

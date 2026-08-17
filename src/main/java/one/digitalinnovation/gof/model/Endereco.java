@@ -1,7 +1,8 @@
 package one.digitalinnovation.gof.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 /**
  * Os atributos desse modelo foram gerados automaticamente pelo site
@@ -16,6 +17,7 @@ import javax.persistence.Id;
 public class Endereco {
 
 	@Id
+	@Column(nullable = false, length = 9)
 	private String cep;
 	private String logradouro;
 	private String complemento;
