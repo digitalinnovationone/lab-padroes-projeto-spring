@@ -1,0 +1,9 @@
+spring:
+  threads:
+    virtual:
+      enabled: true
+  info:
+    build:
+      encoding: UTF-8
+  main:
+    allow-bean-definition-overriding: true

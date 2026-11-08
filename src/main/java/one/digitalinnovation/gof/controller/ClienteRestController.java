@@ -25,8 +25,12 @@ import one.digitalinnovation.gof.service.ClienteService;
 @RequestMapping("clientes")
 public class ClienteRestController {
 
+	private final ClienteService clienteService;
+
 	@Autowired
-	private ClienteService clienteService;
+	public ClienteRestController(ClienteService clienteService) {
+		this.clienteService = clienteService;
+	}
 
 	@GetMapping
 	public ResponseEntity<Iterable<Cliente>> buscarTodos() {

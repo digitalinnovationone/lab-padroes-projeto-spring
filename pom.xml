@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.4</version>
+		<version>4.1.2</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>digitalinnovation.one</groupId>
@@ -16,9 +16,9 @@
 	<description>Exemplos de Padrões de Projeto em Spring</description>
 	
 	<properties>
-		<java.version>11</java.version>
-		<openapi.version>1.5.10</openapi.version>
-		<spring-cloud.version>2020.0.3</spring-cloud.version>
+		<java.version>26</java.version>
+		<openapi.version>3.2.0</openapi.version>
+		<spring-cloud.version>2025.1.2</spring-cloud.version>
 	</properties>
 	
 	<dependencies>
@@ -40,7 +40,7 @@
 		<!-- OpenAPI/Swagger (adicionado manualmente) -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>${openapi.version}</version>
 		</dependency>
 
@@ -55,6 +55,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 	</dependencies>
 
