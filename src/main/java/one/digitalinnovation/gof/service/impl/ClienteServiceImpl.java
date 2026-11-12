@@ -2,6 +2,7 @@ package one.digitalinnovation.gof.service.impl;
 
 import java.util.Optional;
 
+import one.digitalinnovation.gof.exception.ClienteNaoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +24,17 @@ import one.digitalinnovation.gof.service.ViaCepService;
 public class ClienteServiceImpl implements ClienteService {
 
 	// Singleton: Injetar os componentes do Spring com @Autowired.
+	private final ClienteRepository clienteRepository;
+	private final EnderecoRepository enderecoRepository;
+	private final ViaCepService viaCepService;
+
 	@Autowired
-	private ClienteRepository clienteRepository;
-	@Autowired
-	private EnderecoRepository enderecoRepository;
-	@Autowired
-	private ViaCepService viaCepService;
-	
+	public ClienteServiceImpl(ClienteRepository clienteRepository, EnderecoRepository enderecoRepository, ViaCepService viaCepService) {
+		this.clienteRepository = clienteRepository;
+		this.enderecoRepository = enderecoRepository;
+		this.viaCepService = viaCepService;
+	}
+
 	// Strategy: Implementar os métodos definidos na interface.
 	// Facade: Abstrair integrações com subsistemas, provendo uma interface simples.
 
@@ -43,6 +48,8 @@ public class ClienteServiceImpl implements ClienteService {
 	public Cliente buscarPorId(Long id) {
 		// Buscar Cliente por ID.
 		Optional<Cliente> cliente = clienteRepository.findById(id);
+		if (cliente.isEmpty())
+			throw new ClienteNaoEncontradoException("Cliente não encontrado para o ID informado.");
 		return cliente.get();
 	}
 
