@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    name: DB-CLIENTES
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:clientes
+    username: root
+    password:
+  h2:
+    console:
+      enabled: true
+
+
+  threads:
+    virtual:
+      enabled: true
+  info:
+    build:
+      encoding: UTF-8
+  main:
+    allow-bean-definition-overriding: true
