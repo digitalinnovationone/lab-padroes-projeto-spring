@@ -2,6 +2,7 @@ package one.digitalinnovation.gof.service.impl;
 
 import java.util.Optional;
 
+import one.digitalinnovation.gof.exception.ClienteNaoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +49,7 @@ public class ClienteServiceImpl implements ClienteService {
 		// Buscar Cliente por ID.
 		Optional<Cliente> cliente = clienteRepository.findById(id);
 		if (cliente.isEmpty())
-			throw new RuntimeException("Cliente não encontrado para o ID informado.");
+			throw new ClienteNaoEncontradoException("Cliente não encontrado para o ID informado.");
 		return cliente.get();
 	}
 
