@@ -1,9 +1,9 @@
 package one.digitalinnovation.gof.service.impl;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import one.digitalinnovation.gof.model.Cliente;
 import one.digitalinnovation.gof.model.ClienteRepository;
@@ -42,28 +42,41 @@ public class ClienteServiceImpl implements ClienteService {
 	@Override
 	public Cliente buscarPorId(Long id) {
 		// Buscar Cliente por ID.
-		Optional<Cliente> cliente = clienteRepository.findById(id);
-		return cliente.get();
+		return clienteRepository.findById(id)
+				.orElseThrow(() -> erroNaoEncontrado("Nao foi possivel localizar id, verifique e tente novamente"));
 	}
 
 	@Override
 	public void inserir(Cliente cliente) {
+		// Verificar se Cliente já existe.
+		clienteRepository.findById(cliente.getId())
+				.ifPresent(c -> {
+					throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+							"Cliente já existe, verifique e tente novamente");
+		});
 		salvarClienteComCep(cliente);
 	}
 
 	@Override
 	public void atualizar(Long id, Cliente cliente) {
 		// Buscar Cliente por ID, caso exista:
-		Optional<Cliente> clienteBd = clienteRepository.findById(id);
-		if (clienteBd.isPresent()) {
-			salvarClienteComCep(cliente);
-		}
+		clienteRepository.findById(id)
+				.orElseThrow(() -> erroNaoEncontrado("Não foi possivel atualizar, verifique e tente novamente"));
+		cliente.setId(id);
+		salvarClienteComCep(cliente);
 	}
 
 	@Override
 	public void deletar(Long id) {
 		// Deletar Cliente por ID.
+		if (!clienteRepository.existsById(id)) {
+			throw erroNaoEncontrado("Nao foi possivel deletar, verifique e tente novamente");
+		}
 		clienteRepository.deleteById(id);
+	}
+
+	private ResponseStatusException erroNaoEncontrado(String mensagem) {
+		return new ResponseStatusException(HttpStatus.NOT_FOUND, mensagem);
 	}
 
 	private void salvarClienteComCep(Cliente cliente) {
