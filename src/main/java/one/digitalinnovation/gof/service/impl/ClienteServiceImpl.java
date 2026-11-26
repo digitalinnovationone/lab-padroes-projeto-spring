@@ -1,6 +1,6 @@
 package one.digitalinnovation.gof.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,13 +22,17 @@ import one.digitalinnovation.gof.service.ViaCepService;
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
-	// Singleton: Injetar os componentes do Spring com @Autowired.
-	@Autowired
-	private ClienteRepository clienteRepository;
-	@Autowired
-	private EnderecoRepository enderecoRepository;
-	@Autowired
-	private ViaCepService viaCepService;
+	// Singleton gerenciado pelo Spring; constructor injection torna as dependências explícitas e facilita testes.
+	private final ClienteRepository clienteRepository;
+	private final EnderecoRepository enderecoRepository;
+	private final ViaCepService viaCepService;
+
+	public ClienteServiceImpl(ClienteRepository clienteRepository,
+			EnderecoRepository enderecoRepository, ViaCepService viaCepService) {
+		this.clienteRepository = clienteRepository;
+		this.enderecoRepository = enderecoRepository;
+		this.viaCepService = viaCepService;
+	}
 	
 	// Strategy: Implementar os métodos definidos na interface.
 	// Facade: Abstrair integrações com subsistemas, provendo uma interface simples.
@@ -47,14 +51,14 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
-	public void inserir(Cliente cliente) {
-		// Verificar se Cliente já existe.
-		clienteRepository.findById(cliente.getId())
-				.ifPresent(c -> {
-					throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-							"Cliente já existe, verifique e tente novamente");
-		});
-		salvarClienteComCep(cliente);
+	public Cliente inserir(Cliente cliente) {
+		if (cliente.getId() != null && clienteRepository.existsById(cliente.getId())) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT,
+					"Cliente já existe, verifique e tente novamente");
+		}
+		// POST cria um novo recurso: o ID deve ser gerado pela estratégia JPA.
+		cliente.setId(null);
+		return salvarClienteComCep(cliente);
 	}
 
 	@Override
@@ -79,18 +83,29 @@ public class ClienteServiceImpl implements ClienteService {
 		return new ResponseStatusException(HttpStatus.NOT_FOUND, mensagem);
 	}
 
-	private void salvarClienteComCep(Cliente cliente) {
+	private Cliente salvarClienteComCep(Cliente cliente) {
 		// Verificar se o Endereco do Cliente já existe (pelo CEP).
-		String cep = cliente.getEndereco().getCep();
+		// Normaliza CEP com ou sem hífen para manter uma única chave no banco.
+		String cepInformado = cliente.getEndereco().getCep();
+		String cep = cepInformado.replace("-", "");
 		Endereco endereco = enderecoRepository.findById(cep).orElseGet(() -> {
 			// Caso não exista, integrar com o ViaCEP e persistir o retorno.
-			Endereco novoEndereco = viaCepService.consultarCep(cep);
-			enderecoRepository.save(novoEndereco);
-			return novoEndereco;
+			Endereco novoEndereco;
+			try {
+				novoEndereco = viaCepService.consultarCep(cep);
+			} catch (FeignException exception) {
+				throw new ResponseStatusException(HttpStatus.BAD_GATEWAY,
+						"Não foi possível consultar o CEP no ViaCEP");
+			}
+			if (novoEndereco == null || novoEndereco.isErro()) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CEP não encontrado");
+			}
+			novoEndereco.setCep(cep);
+			return enderecoRepository.save(novoEndereco);
 		});
 		cliente.setEndereco(endereco);
 		// Inserir Cliente, vinculando o Endereco (novo ou existente).
-		clienteRepository.save(cliente);
+		return clienteRepository.save(cliente);
 	}
 
 }

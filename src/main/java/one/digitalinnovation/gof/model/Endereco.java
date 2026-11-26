@@ -2,6 +2,8 @@ package one.digitalinnovation.gof.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 /**
  * Os atributos desse modelo foram gerados automaticamente pelo site
@@ -16,6 +18,8 @@ import javax.persistence.Id;
 public class Endereco {
 
 	@Id
+	@NotBlank(message = "O CEP é obrigatório")
+	@Pattern(regexp = "\\d{5}-?\\d{3}", message = "Informe um CEP válido")
 	private String cep;
 	private String logradouro;
 	private String complemento;
@@ -26,6 +30,7 @@ public class Endereco {
 	private String gia;
 	private String ddd;
 	private String siafi;
+	private boolean erro;
 
 	public String getCep() {
 		return cep;
@@ -105,6 +110,14 @@ public class Endereco {
 
 	public void setSiafi(String siafi) {
 		this.siafi = siafi;
+	}
+
+	public boolean isErro() {
+		return erro;
+	}
+
+	public void setErro(boolean erro) {
+		this.erro = erro;
 	}
 
 }
