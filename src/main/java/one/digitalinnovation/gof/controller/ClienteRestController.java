@@ -1,6 +1,9 @@
 package one.digitalinnovation.gof.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.net.URI;
+
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +28,11 @@ import one.digitalinnovation.gof.service.ClienteService;
 @RequestMapping("clientes")
 public class ClienteRestController {
 
-	@Autowired
-	private ClienteService clienteService;
+	private final ClienteService clienteService;
+
+	public ClienteRestController(ClienteService clienteService) {
+		this.clienteService = clienteService;
+	}
 
 	@GetMapping
 	public ResponseEntity<Iterable<Cliente>> buscarTodos() {
@@ -38,14 +44,16 @@ public class ClienteRestController {
 		return ResponseEntity.ok(clienteService.buscarPorId(id));
 	}
 
+	// 201 Created e Location indicam a URI do recurso recém-criado.
 	@PostMapping
-	public ResponseEntity<Cliente> inserir(@RequestBody Cliente cliente) {
-		clienteService.inserir(cliente);
-		return ResponseEntity.ok(cliente);
+	public ResponseEntity<Cliente> inserir(@Valid @RequestBody Cliente cliente) {
+		Cliente criado = clienteService.inserir(cliente);
+		URI location = URI.create("/clientes/" + criado.getId());
+		return ResponseEntity.created(location).body(criado);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Cliente> atualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
+	public ResponseEntity<Cliente> atualizar(@PathVariable Long id, @Valid @RequestBody Cliente cliente) {
 		clienteService.atualizar(id, cliente);
 		return ResponseEntity.ok(cliente);
 	}
@@ -53,6 +61,6 @@ public class ClienteRestController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletar(@PathVariable Long id) {
 		clienteService.deletar(id);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.noContent().build();
 	}
 }
